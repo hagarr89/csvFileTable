@@ -1,0 +1,15 @@
+.CSVSelector {
+  input[type="file"] {
+    display: none;
+  }
+  &-fake {
+    display: flex;
+    align-items: center;
+  }
+  .csv-button {
+    gap: 0.5rem;
+  }
+  .FileNme {
+    padding-left: 5px;
+  }
+}

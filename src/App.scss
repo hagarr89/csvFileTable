@@ -1,0 +1,10 @@
+.App {
+  padding: 1rem;
+  .filters {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 1rem 0;
+  }
+}
