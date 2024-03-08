@@ -9,7 +9,6 @@ const CSVSelector = <T extends { [x: string]: any }>({
   onChange,
 }: Props<T>) => {
   const [fileName, setFileName] = useState<string>("");
-
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       try {

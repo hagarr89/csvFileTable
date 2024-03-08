@@ -4,6 +4,7 @@ import CSVReader from "./components/CSVReader";
 import CSVSelector from "./components/CSVSelector";
 import DatePickerInput, { IDateRange } from "./components/DatePickerInput";
 import dayjs from "dayjs";
+import useCsvFile from "./hooks/useCsvFile";
 
 export interface IData {
   timestamp: string;
@@ -14,17 +15,14 @@ export interface IData {
 const initalDate = dayjs(new Date());
 
 function App() {
-  const [csvDate, setCsvData] = useState<IData[] | []>([]);
   const [dateRange, setDateRange] = useState<IDateRange>({
     to: initalDate,
     from: initalDate,
   });
+  const { handelCsvData, filterData } = useCsvFile(dateRange);
 
-  const filterData = csvDate.filter((row) =>
-    dayjs(row.timestamp).isBetween(dateRange.from, dateRange.to, "day", "[]")
-  );
-  const handelCsvData = (data: IData[]) => {
-    setCsvData(data);
+  const onChangeCsvData = (data: IData[]) => {
+    handelCsvData(data);
   };
   const handelDateRange = (date: IDateRange) => {
     setDateRange({ from: date.from, to: date.to });
@@ -33,7 +31,7 @@ function App() {
     <div className="App">
       <div className="filters">
         <DatePickerInput date={dateRange} onChangeDate={handelDateRange} />
-        <CSVSelector onChange={handelCsvData} />
+        <CSVSelector onChange={onChangeCsvData} />
       </div>
 
       <CSVReader data={filterData} />
