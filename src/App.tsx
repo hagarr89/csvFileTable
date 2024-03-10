@@ -19,10 +19,11 @@ function App() {
     to: initalDate,
     from: initalDate,
   });
-  const { handelCsvData, filterData } = useCsvFile(dateRange);
+  const { filterData, handelCsvChange, isLoading, fileName } =
+    useCsvFile(dateRange);
 
-  const onChangeCsvData = (data: IData[]) => {
-    handelCsvData(data);
+  const onChangeCsvData = (file: File) => {
+    handelCsvChange(file);
   };
   const handelDateRange = (date: IDateRange) => {
     setDateRange({ from: date.from, to: date.to });
@@ -31,10 +32,10 @@ function App() {
     <div className="App">
       <div className="filters">
         <DatePickerInput date={dateRange} onChangeDate={handelDateRange} />
-        <CSVSelector onChange={onChangeCsvData} />
+        <CSVSelector onChange={onChangeCsvData} fileName={fileName} />
       </div>
 
-      <CSVReader data={filterData} />
+      <CSVReader data={filterData} isLoading={isLoading} />
     </div>
   );
 }

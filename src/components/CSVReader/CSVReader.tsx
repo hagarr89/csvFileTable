@@ -11,7 +11,13 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-const CSVReader = <T extends { [x: string]: any }>({ data }: { data: T[] }) => {
+const CSVReader = <T extends { [x: string]: any }>({
+  data,
+  isLoading,
+}: {
+  data: T[];
+  isLoading: boolean;
+}) => {
   const headers = data?.length ? Object.keys(data[0]) : [];
 
   const [page, setPage] = useState(0);
@@ -47,10 +53,10 @@ const CSVReader = <T extends { [x: string]: any }>({ data }: { data: T[] }) => {
     setPage(0);
   };
 
-  if (!data.length) return <data>No Data was found</data>;
+  if (!data.length && !isLoading) return <data>No Data was found</data>;
   return (
     <div>
-      {sortedRows.length ? (
+      {!isLoading ? (
         <div>
           <TableContainer component={Paper}>
             <Table>
@@ -62,8 +68,9 @@ const CSVReader = <T extends { [x: string]: any }>({ data }: { data: T[] }) => {
                         active={orderBy === header}
                         direction={orderBy === header ? order : "asc"}
                         onClick={() => handleSort(header)}
-                      ></TableSortLabel>
-                      {header.replace("_", " ")}
+                      >
+                        {header.replace("_", " ")}
+                      </TableSortLabel>
                     </TableCell>
                   ))}
                 </TableRow>

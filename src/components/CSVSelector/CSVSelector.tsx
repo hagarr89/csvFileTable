@@ -1,37 +1,13 @@
-import React, { useState } from "react";
 import { Button } from "@mui/material";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
-import axios from "axios";
-type Props<T> = {
-  onChange(data: T[]): void;
+type Props = {
+  onChange(file: File | null): void;
+  fileName?: string;
 };
-const CSVSelector = <T extends { [x: string]: any }>({
-  onChange,
-}: Props<T>) => {
-  const [fileName, setFileName] = useState<string>("");
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      try {
-        const file = e.target.files[0];
-        setFileName(file?.name);
-
-        if (file) {
-          const res = await axios.post(
-            "/api/upload-csv-file",
-            { file },
-            {
-              headers: { "content-type": "multipart/form-data" },
-            }
-          );
-          onChange(res.data.data);
-        } else {
-          onChange([]);
-          setFileName("");
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
+const CSVSelector = ({ onChange, fileName }: Props) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    onChange(file);
   };
   return (
     <div className="CSVSelector">
@@ -51,7 +27,7 @@ const CSVSelector = <T extends { [x: string]: any }>({
           <UploadFileIcon />
           <div>Upload File</div>
         </Button>
-        <div className="FileNme">{fileName}</div>
+        {fileName && <div className="FileNme">{fileName}</div>}
       </label>
     </div>
   );
